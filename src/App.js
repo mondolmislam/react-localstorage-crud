@@ -23,6 +23,7 @@ constructor(props){
     products : JSON.parse(localStorage.getItem('products'))
   };
   this.onDelete = this.onDelete.bind(this);
+  this.onAdd = this.onAdd.bind(this);
 }
 
   componentWillMount(){
@@ -32,6 +33,16 @@ constructor(props){
 
 getProducts(){
    return this.state.products;
+}
+
+onAdd(name,price){
+  const products = this.getProducts();
+
+  products.push({
+    name,
+    price
+  });
+  this.setState({ products });
 }
 
 onDelete(name){
@@ -48,6 +59,7 @@ onDelete(name){
        <h1>Products  List </h1>
 
        <AddProduct
+       onAdd = {this.onAdd}
        />
        { this.state.products.map(product =>{
            return (
