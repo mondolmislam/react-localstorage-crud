@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import ProductItem from './products-items';
+import AddProduct from './add-products';
 
 const products = [
 {
@@ -19,7 +20,7 @@ class App extends Component {
 constructor(props){
   super(props);
   this.state = {
-    products : []
+    products : JSON.parse(localStorage.getItem('products'))
   };
   this.onDelete = this.onDelete.bind(this);
 }
@@ -30,17 +31,24 @@ constructor(props){
   }
 
 getProducts(){
-   return JSON.parse(localStorage.getItem('products'));
+   return this.state.products;
 }
 
 onDelete(name){
-  console.log(name);
-  
+  const products=this.get200Products();
+
+  const filteredProducts = products.filter(product =>{
+    return product.name!=name;
+  });
+  this.setState({products: filteredProducts});
 }
   render() {
     return (
       <div className="App">
        <h1>Products  List </h1>
+
+       <AddProduct
+       />
        { this.state.products.map(product =>{
            return (
              <ProductItem
