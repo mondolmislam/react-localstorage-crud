@@ -24,6 +24,7 @@ constructor(props){
   };
   this.onDelete = this.onDelete.bind(this);
   this.onAdd = this.onAdd.bind(this);
+   this.onEditSubmit = this.onEditSubmit.bind(this);
 }
 
   componentWillMount(){
@@ -46,12 +47,24 @@ onAdd(name,price){
 }
 
 onDelete(name){
-  const products=this.get200Products();
+  const products=this.getProducts();
 
   const filteredProducts = products.filter(product =>{
-    return product.name!=name;
+    return product.name!==name;
   });
   this.setState({products: filteredProducts});
+}
+onEditSubmit(name,price,originalName){
+let products = this.getProducts();
+products = products.map(product => {
+  if(product.name === originalName){
+    product.name = name;
+    product.price = price;
+  }
+  return product;
+});
+
+  this.setState({products});
 }
   render() {
     return (
@@ -67,6 +80,7 @@ onDelete(name){
              key={product.name}
             {...product}
             onDelete={this.onDelete}
+            onEditSubmit={this.onEditSubmit}
              />
            )
          })
